@@ -258,5 +258,3 @@ def check(go):
         return False
 
 main()
-"# MountainClimber" 
-"# MountainClimber" 
