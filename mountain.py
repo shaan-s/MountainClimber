@@ -95,6 +95,7 @@ def clrScheme():
         MED = Fore.BLUE + Back.WHITE
         HIGH = Fore.RED + Back.WHITE
         TXT = Fore.RED + Back.BLACK
+    f = input
 
 def setup():
     winsound.PlaySound('open.wav', winsound.SND_FILENAME)
@@ -114,24 +115,19 @@ def setup():
     winsound.PlaySound('move.wav', winsound.SND_FILENAME)
     global t
     s = [" ", "░", "▒", "▓"]
-    v = 0
-    while 400 != v:
+    for x in range(400):
         t.append(s[random.randint(0, 3)])
-        v += 1
     global data2
     data2 = t[:]
     t[0] = "P"
-    c = 0
-    while int(dif) != c:
+    for x in range(int(dif)):
         ran = random.randint(5,399)
         data2[ran] = "⚑"
         t[ran] = "⚑"
-        c += 1
     global mtn
     file = open("mountainnames.txt", "r")
     r = file.read().split(",   ")
     mtn = r[random.randint(0, len(r))]
-
 
 def printWorld():
     print(TXT, end="")
@@ -151,13 +147,11 @@ def printWorld():
 ----to Low (░), None( ), Or Medium(▒)) Good Luck!
 """)
     print(HIGH + "High Elevation: ▓ " + MED + "Medium Elevation: ▒ "+ LOW +"Low Elevation: ░ ")
-    print(TXT + "██████████████████████████████████████████")
-    r = 0
+    print(TXT + "█" * 42)
     m = 0
-    while r != 10:
-        d = 0
+    for r in range(10):
         print(TXT + "█", end="")
-        while d != 40:
+        for d in range(40):
             if t[m] == "░":
                 print(LOW, end="")
             elif t[m] == "▒":
@@ -170,11 +164,9 @@ def printWorld():
                 print(FLAG, end="")
             print(t[m], end="")
             m += 1
-            d += 1
         print(TXT + "█", end="")
-        r += 1
         print(" ")
-    print(TXT + "██████████████████████████████████████████")
+    print(TXT + "█" * 42)
     print("||Info:||")
     print("||You are climbing: " + mtn.upper() + "!||")
     print("||Current Block On: " + data2[pos], end="")
