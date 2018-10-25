@@ -35,7 +35,6 @@ def main():
             printWorld()
             winsound.PlaySound('win.wav', winsound.SND_FILENAME)
             print("You found the flag in " + str(moves) + " moves!" + Fore.RESET)
-
             break
 
 def clrScheme():
@@ -95,7 +94,6 @@ def clrScheme():
         MED = Fore.BLUE + Back.WHITE
         HIGH = Fore.RED + Back.WHITE
         TXT = Fore.RED + Back.BLACK
-    f = input
 
 def setup():
     winsound.PlaySound('open.wav', winsound.SND_FILENAME)
