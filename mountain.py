@@ -1,6 +1,9 @@
 import random
-import winsound
 import sys
+#for sound
+import winsound
+
+#For text colour
 from colorama import Fore
 from colorama import Style
 from colorama import init
@@ -21,6 +24,7 @@ LOW = ""
 MED = ""
 HIGH = ""
 TXT = ""
+sflag = "⚑"
 
 def main():
     setup()
@@ -60,12 +64,8 @@ def clrScheme():
         except:
             winsound.PlaySound('error.wav', winsound.SND_FILENAME)
             pass
-    global FLAG
-    global PLYR
-    global LOW
-    global MED
-    global HIGH
-    global TXT
+    global FLAG, PLYR, LOW, MED, HIGH, TXT, sflag
+    #Setting colours
     if d == 1:
         FLAG = Fore.RED
         PLYR = Fore.YELLOW
@@ -98,6 +98,7 @@ def clrScheme():
 def setup():
     winsound.PlaySound('open.wav', winsound.SND_FILENAME)
     global dif
+    #asking difficulty
     while True:
         dif = input("Please set the difficulty from 1-10. (10 is easiest) ")
         try:
@@ -111,23 +112,39 @@ def setup():
             print("Please provide a valid number.")
             winsound.PlaySound('error.wav', winsound.SND_FILENAME)
     winsound.PlaySound('move.wav', winsound.SND_FILENAME)
-    global t
+    #Changing flag symbol
+    fla = input("Would you like to change the flag symbol to 'F' instead of '⚑'? (Y/N) ")
+    winsound.PlaySound('move.wav', winsound.SND_FILENAME)
+    if fla == "Y":
+        sflag = "F"
+    #One list, t, is used to store what shows up on the screen
+    #Data 2 stores the actual data so once you step on a square, you can get the height again.
+    global t, data2
+    #S is the possible tiles
     s = [" ", "░", "▒", "▓"]
+    #This generates 400 of those tiles
     for x in range(400):
         t.append(s[random.randint(0, 3)])
-    global data2
+    #These add a flag 2x3 area in the start so you cant get locked
+    t[0], t[1], t[2] = " ", " ", " "
+    t[39], t[40], t[41] = " ", " ", " "
+    #This copies t over to data2
     data2 = t[:]
+    #Displays the starting pos of the player
     t[0] = "P"
+    #Generates flag(s)
     for x in range(int(dif)):
         ran = random.randint(5,399)
-        data2[ran] = "⚑"
-        t[ran] = "⚑"
+        data2[ran] = sflag
+        t[ran] = sflag
+    #Generates mountain names
     global mtn
     file = open("mountainnames.txt", "r")
     r = file.read().split(",   ")
     mtn = r[random.randint(0, len(r))]
 
 def printWorld():
+    #Sets txt colour
     print(TXT, end="")
     if gmo == True:
         print("Game Over!!")
@@ -145,8 +162,10 @@ def printWorld():
 ----to Low (░), None( ), Or Medium(▒)) Good Luck!
 """)
     print(HIGH + "High Elevation: ▓ " + MED + "Medium Elevation: ▒ "+ LOW +"Low Elevation: ░ ")
+    #Prints the top border of the screen
     print(TXT + "█" * 42)
     m = 0
+    #This prints the screen by first checking which tile it is, then setting the color. At the end, it is printed.
     for r in range(10):
         print(TXT + "█", end="")
         for d in range(40):
@@ -164,10 +183,13 @@ def printWorld():
             m += 1
         print(TXT + "█", end="")
         print(" ")
+    #Bottom screen border
     print(TXT + "█" * 42)
+    #Bottom info screen
     print("||Info:||")
     print("||You are climbing: " + mtn.upper() + "!||")
     print("||Current Block On: " + data2[pos], end="")
+    #Tells what height you are on
     if data2[pos] == " ":
         print(" (No Elevation)||")
     elif data2[pos] == "░":
@@ -178,10 +200,13 @@ def printWorld():
         print(" (Flag {You Win!})||")
     else:
         print(" (High Elevation)||")
+    #Moves
     print("||Moves: "+ str(moves) +"||")
 
 
 def player(data):
+    #This function asks for the direction, and checks if it's possible in the screen boundaries.
+    #This does not check if the height is correct because that is the check's function job.
     global pos
     while True:
         p = input("What direction? W, A, S, or D ")
@@ -221,6 +246,7 @@ def player(data):
 
 
 def check(go):
+    #This returns true or false depending on if the surrounding squares can be moved on.
     cb = data2[pos]
     gb = data2[go]
     global gmo
