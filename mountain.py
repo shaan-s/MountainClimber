@@ -98,6 +98,7 @@ def clrScheme():
 def setup():
     winsound.PlaySound('open.wav', winsound.SND_FILENAME)
     global dif
+    global sflag
     #asking difficulty
     while True:
         dif = input("Please set the difficulty from 1-10. (10 is easiest) ")
